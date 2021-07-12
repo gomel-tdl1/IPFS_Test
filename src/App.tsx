@@ -11,8 +11,10 @@ import {AppStateType} from "./redux/redux-store";
 import {connect} from "react-redux";
 import {actionsAuth} from "./redux/auth-reducer";
 import { compose } from 'redux';
+import Navigation from "./components/NavBar/Navigation";
 
-const CreateNFTToken = React.lazy(() => import("./components/CreateNFTToken/CreateNFTToken"));
+const CreateNFTTokenContainer = React.lazy(() => import("./components/CreateNFTToken/CreateNFTToken"));
+const ViewTokensContainer = React.lazy(() => import("./components/ViewYourTokens/ViewTokens"));
 
 type MapStateToPropsType = {
     isConnected: boolean,
@@ -35,7 +37,7 @@ const App: FC<PropsType> = React.memo((props) => {
             </Header>
             <Layout>
                 <Sider width={300} theme={'dark'}>
-
+                    <Navigation/>
                 </Sider>
                 <Content>
                     <Switch>
@@ -43,7 +45,9 @@ const App: FC<PropsType> = React.memo((props) => {
                                render={() => <Redirect to={"/create"}/>}/>
 
                         <Route path='/create'
-                               render={withSuspense(CreateNFTToken)}/>
+                               render={withSuspense(CreateNFTTokenContainer)}/>
+                        <Route path='/view'
+                               render={withSuspense(ViewTokensContainer)}/>
 
                         <Route path='*'
                                render={() => <div>404 NOT FOUND</div>}/>
@@ -54,7 +58,7 @@ const App: FC<PropsType> = React.memo((props) => {
         </Layout>
     );
 })
-const MapStateToProps = (state: AppStateType) => ({
+const MapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     isConnected: state.auth.isConnected
 })
 const MainApp = compose<ComponentType>(

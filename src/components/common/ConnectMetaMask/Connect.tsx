@@ -40,7 +40,7 @@ const ConnectMetaMask: FC<PropsType> = (props) => {
             <div className='flex items-center gap-2'>
                 <Title level={5} style={{color: 'white'}}>{userAddress}</Title>
                 <div >
-                    <Text code >{balance} NFT</Text>
+                    <Text code style={{color: 'white'}}>{balance} NFT</Text>
                 </div>
 
             </div>
