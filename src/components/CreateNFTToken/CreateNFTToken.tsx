@@ -9,6 +9,7 @@ import {AppStateType} from "../../redux/redux-store";
 
 type MapStateToPropsType = {
     isConnected: boolean,
+    ipfs: any
 }
 type MapDispatchToPropsType = {}
 type OwnPropsType = {}
@@ -18,14 +19,13 @@ const CreateNFTToken: FC<PropsType> = React.memo((props) => {
     let [name, setName] = useState<string>('');
     let [description, setDescription] = useState<string>('');
     let [fileUint8Array, setFileUint8Array] = useState<any[] | null>(null);
-    let ipfs: any;
 
     const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         let file = e.target.files[0]
         let reader = new FileReader()
         reader.readAsArrayBuffer(file)
-        reader.onload = async (e) => {
+        reader.onload = async (e: ProgressEvent<FileReader>) => {
             let buffer = e.target?.result;
             // @ts-ignore
             setFileUint8Array(new Uint8Array(buffer));
@@ -46,7 +46,7 @@ const CreateNFTToken: FC<PropsType> = React.memo((props) => {
         const NFTContractInstance = new ethers.Contract(NFTContract, NFT_ABI, provider)
 
         if (name && description && fileUint8Array) {
-            if(!ipfs) ipfs = await IPFS.create();
+            let ipfs = await props.ipfs;
             let ipfsFileHash = await ipfs.add(fileUint8Array);
             let metadata = JSON.stringify({
                 name,
@@ -86,7 +86,8 @@ const CreateNFTToken: FC<PropsType> = React.memo((props) => {
 })
 
 const MapStateToProps = (state: AppStateType): MapStateToPropsType => ({
-    isConnected: state.auth.isConnected
+    isConnected: state.auth.isConnected,
+    ipfs: state.auth.ipfs
 })
 
 const CreateNFTTokenContainer = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(MapStateToProps, {})(CreateNFTToken)

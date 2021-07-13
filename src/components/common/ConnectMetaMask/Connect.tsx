@@ -18,11 +18,11 @@ const ConnectMetaMask: FC<PropsType> = (props) => {
     useEffect(() => {
         (async ()=>{
             if (props.isConnected) {
-                let signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+                let provider = new ethers.providers.Web3Provider(window.ethereum)
+                let signer = provider.getSigner()
                 let address = await signer.getAddress()
                 setUserAddress(address)
 
-                let provider = new ethers.providers.Web3Provider(window.ethereum)
                 let contractNFT = new ethers.Contract(NFTContract, NFT_ABI, provider)
                 let signerBalance = await contractNFT.balanceOf(address)
                 setBalance(+signerBalance)

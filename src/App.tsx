@@ -10,8 +10,9 @@ import ConnectMetaMask from "./components/common/ConnectMetaMask/Connect";
 import {AppStateType} from "./redux/redux-store";
 import {connect} from "react-redux";
 import {actionsAuth} from "./redux/auth-reducer";
-import { compose } from 'redux';
+import {compose} from 'redux';
 import Navigation from "./components/NavBar/Navigation";
+import Title from "antd/es/typography/Title";
 
 const CreateNFTTokenContainer = React.lazy(() => import("./components/CreateNFTToken/CreateNFTToken"));
 const ViewTokensContainer = React.lazy(() => import("./components/ViewYourTokens/ViewTokens"));
@@ -38,6 +39,10 @@ const App: FC<PropsType> = React.memo((props) => {
             <Layout>
                 <Sider width={300} theme={'dark'}>
                     <Navigation/>
+                    <Title level={5} className='mt-6' style={{color: 'white'}}>
+                        For transfer some token to any wallet click on TokenCard
+                    </Title>
+
                 </Sider>
                 <Content>
                     <Switch>

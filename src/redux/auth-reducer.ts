@@ -1,4 +1,5 @@
 import {InferActionsTypes} from "./redux-store";
+import IPFS from 'ipfs'
 
 export const actionsAuth = {
     setIsConnected: (isConnected: boolean) => ({
@@ -8,7 +9,8 @@ export const actionsAuth = {
 }
 
 const initialState = {
-    isConnected: false
+    isConnected: false,
+    ipfs: IPFS.create()
 };
 export type InitialStateType = typeof initialState;
 type ActionsTypes = InferActionsTypes<typeof actionsAuth>
