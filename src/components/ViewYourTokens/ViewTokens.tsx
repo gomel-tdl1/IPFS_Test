@@ -44,9 +44,11 @@ const ViewTokens: FC<PropsType> = (props) => {
         }
     }
     useEffect(()=>{
+        setIsFetching(true)
         // @ts-ignore
         let pagTokens = paginator(filteredTokens, currentPage)
         setPaginatedTokens(pagTokens)
+        setIsFetching(false)
     }, [filteredTokens, currentPage])
 
     function paginator(items: TokenType[], current_page: number, per_page_items: number = 20) {
