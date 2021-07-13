@@ -8,6 +8,7 @@ import {encodingAPI} from "../../API/api";
 import TokenCard from "./TokenCard";
 import Title from "antd/es/typography/Title";
 import {Pagination, Switch} from "antd";
+import Preloader from "../common/Preloader/Preloader";
 
 type MapStateToPropsType = {
     isConnected: boolean,
@@ -30,6 +31,7 @@ const ViewTokens: FC<PropsType> = (props) => {
     let [filteredTokens, setFilteredTokens] = useState<TokenType[] | null>(null)
     let [paginatedTokens, setPaginatedTokens] = useState<TokenType[] | null>(null)
     let [currentPage, setCurrentPage] = useState<number>(1)
+    let [isFetching, setIsFetching] = useState<boolean>(false)
 
     const handleSwitchChange = (e: boolean) => {
         if (e) {
@@ -56,6 +58,7 @@ const ViewTokens: FC<PropsType> = (props) => {
     }
 
     useEffect(() => {
+        setIsFetching(true)
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const NFTContractInstance = new ethers.Contract(NFTContract, NFT_ABI, provider);
@@ -95,13 +98,15 @@ const ViewTokens: FC<PropsType> = (props) => {
 
             setTokensResData(tokensData);
             setFilteredTokens(tokensData)
-
+            setIsFetching(false)
         })()
+
     }, [])
 
     const handlePageChanged = (page: number) => {
         setCurrentPage(page)
     }
+    if(isFetching) return <Preloader height={'490px'}/>
     return (
         <div className='flex justify-center'>
             {props.isConnected &&
